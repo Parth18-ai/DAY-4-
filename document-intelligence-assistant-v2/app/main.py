@@ -24,8 +24,10 @@ def _seed_database():
             for pdf in sorted(config.PDF_DIR.glob("*.pdf")):
                 print("Seeding:", ingest_pdf(pdf), flush=True)
     except Exception as e:
-        detail = getattr(getattr(e, "response", None), "text", "")[:300]
+        detail = getattr(getattr(e, "response", None), "text", "")[:400].replace("\n", " ")
         print("Seeding skipped:", repr(e), detail, flush=True)
+        key = config.OPENAI_API_KEY
+        print("KEY CHECK: length", len(key), "starts with", key[:4], flush=True)
 
 
 @asynccontextmanager
