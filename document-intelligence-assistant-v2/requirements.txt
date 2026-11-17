@@ -1,0 +1,9 @@
+# API (used by Dockerfile / Render / Railway)
+fastapi
+uvicorn
+python-multipart
+pydantic
+requests
+chromadb
+pymupdf
+python-dotenv

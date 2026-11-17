@@ -1,0 +1,22 @@
+# Render "Blueprint": Render > New > Blueprint > pick your GitHub repo.
+services:
+  - type: web
+    name: doc-intel-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free                  # free: sleeps after 15 min idle, disk wiped on restart (fine for a demo)
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: LLM_PROVIDER
+        value: openai
+      - key: CHAT_MODEL
+        value: gpt-4o-mini
+      - key: EMBED_MODEL
+        value: text-embedding-3-small
+      - key: OPENAI_API_KEY     # SECRET: you type it in the Render dashboard, never in git
+        sync: false
+      - key: API_KEY            # SECRET: Render generates a random value; copy it from the dashboard
+        generateValue: true
+      - key: ALLOWED_ORIGINS
+        value: "*"

@@ -1,0 +1,35 @@
+# Run the API in Docker:        docker compose up --build
+# + a local Ollama container:    docker compose --profile local-llm up --build
+#   then pull the models once:   docker compose exec ollama ollama pull llama3.2
+#                                docker compose exec ollama ollama pull nomic-embed-text
+# Secrets come from your .env file (copy .env.example to .env). Nothing secret is written in this file.
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      # Default = Ollama running on your own PC (Docker Desktop on Windows/Mac).
+      # With the local-llm profile use:  OLLAMA_URL=http://ollama:11434  in .env
+      OLLAMA_URL: ${OLLAMA_URL:-http://host.docker.internal:11434}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - chroma_data:/code/data/chroma
+      - ./logs:/code/logs
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama
+    profiles: ["local-llm"]
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+
+volumes:
+  chroma_data:
+  ollama_models:
