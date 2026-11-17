@@ -24,8 +24,9 @@ def _seed_database():
         if get_collection().count() == 0:
             for pdf in sorted(config.PDF_DIR.glob("*.pdf")):
                 print("Seeding:", ingest_pdf(pdf), flush=True)
-    except Exception as e:  # never crash the server because of seeding
-        print("Seeding skipped:", repr(e), flush=True)
+        except Exception as e:  # never crash the server because of seeding
+        detail = getattr(getattr(e, "response", None), "text", "")[:300]
+        print("Seeding skipped:", repr(e), detail, flush=True)
 
 
 @asynccontextmanager
