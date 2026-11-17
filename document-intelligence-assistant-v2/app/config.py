@@ -20,7 +20,7 @@ LOG_FILE = Path(os.getenv("LOG_FILE", BASE_DIR / "logs" / "requests.jsonl"))
 LLM_PROVIDER = os.getenv("LLM_PROVIDER", "ollama").lower()
 
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")          # SECRET
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "").strip().strip('"').strip("'")       # SECRET
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1").rstrip("/")
 
 CHAT_MODEL = os.getenv("CHAT_MODEL", "llama3.2" if LLM_PROVIDER == "ollama" else "gpt-4o-mini")
