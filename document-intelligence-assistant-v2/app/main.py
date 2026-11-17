@@ -18,13 +18,12 @@ from .store import get_collection
 
 
 def _seed_database():
-    """On startup, if the database is empty, ingest the PDFs shipped in data/pdfs.
-    (Needed on free hosting where the disk is wiped on every restart.)"""
+    """On startup, if the database is empty, ingest the PDFs shipped in data/pdfs."""
     try:
         if get_collection().count() == 0:
             for pdf in sorted(config.PDF_DIR.glob("*.pdf")):
                 print("Seeding:", ingest_pdf(pdf), flush=True)
-        except Exception as e:  # never crash the server because of seeding
+    except Exception as e:
         detail = getattr(getattr(e, "response", None), "text", "")[:300]
         print("Seeding skipped:", repr(e), detail, flush=True)
 
